@@ -1,11 +1,11 @@
-﻿using System.Text;
-using ConsoleApp2.AsyncPatterns;
-using DotNetExamplesAndNotes.ConsoleApp.VisitorPattern;
+﻿using System.Linq.Expressions;
 
 class Program
 {
     static async Task Main(string[] args)
     {
-        TestArea.VisitorPaternTestArea();
+        //await AsyncOperationsWithIterators.AsyncWithIteratorsExample();
+        //TestArea.VisitorPaternTestArea();
+
     }
 }
