@@ -1,0 +1,159 @@
+﻿@page "/livedata"
+@using BlazorWebApp.Shared
+@using System.Security.Cryptography;
+@using Microsoft.AspNetCore.SignalR.Client;
+@using System.Threading.Channels;
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h3>LiveDataViewer</h3>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<PageTitle>Real-time charts in Blazor WebAssembly</PageTitle>
+
+<h1>Real-time charts in Blazor WebAssembly</h1>
+
+<div class="chart-container">
+    <div class="radial-chart">
+        <ApexChart TItem="DataItem"
+                   Title="Transactions"
+                   Options="@_radialChartOptions"
+                   @ref="_radialChart">
+
+            <ApexPointSeries TItem="DataItem"
+                             Items="_radialData"
+                             SeriesType="SeriesType.RadialBar"
+                             Name="Variation"
+                             XValue="@(e => "Variation")"
+                             YAggregate="@(e => e.Average(e => e.Value))" />
+        </ApexChart>
+    </div>
+
+    <div class="line-chart">
+        <ApexChart TItem="DataItem"
+                   Title="Currency Exchange Rates in USD"
+                   Options="@_lineChartOptions"
+                   @ref="_lineChart">
+
+            <ApexPointSeries TItem="DataItem"
+                             Items="_yenSeries"
+                             Name="Yen"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Minute)"
+                             YAggregate="@(e => e.Sum(e => e.Value))" />
+
+            <ApexPointSeries TItem="DataItem"
+                             Items="_euroSeries"
+                             Name="Euro"
+                             SeriesType="SeriesType.Line"
+                             XValue="@(e => e.Minute)"
+                             YAggregate="@(e => e.Sum(e => e.Value))" />
+        </ApexChart>
+    </div>
+</div>
+
+@code {
+    private ApexChartOptions<DataItem> _radialChartOptions = new ApexChartOptions<DataItem>();
+
+    private ApexChartOptions<DataItem> _lineChartOptions = new ApexChartOptions<DataItem>
+        {
+            Chart = new Chart
+            {
+                Animations = new()
+                {
+                    Enabled = true,
+                    Easing = Easing.Linear,
+                    DynamicAnimation = new()
+                    {
+                        Speed = 1000
+                    }
+                },
+                Toolbar = new()
+                {
+                    Show = false
+                },
+                Zoom = new()
+                {
+                    Enabled = false
+                }
+            },
+            Stroke = new Stroke { Curve = Curve.Straight },
+            Xaxis = new()
+            {
+                Range = 12
+            },
+            Yaxis = new()
+            {
+                new()
+                {
+                    DecimalsInFloat = 2,
+                    TickAmount = 5,
+                    Min = 0,
+                    Max = 5
+                }
+            }
+        };
+
+    private readonly IList<DataItem> _yenSeries = new List<DataItem>();
+    private readonly IList<DataItem> _euroSeries = new List<DataItem>();
+    private IList<DataItem> _radialData;
+    private ApexChart<DataItem> _lineChart = default!;
+    private ApexChart<DataItem> _radialChart = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _radialData = new DataItem[1] 
+        {
+            new(DateTime.Now.ToString("mm:ss"), 0)
+        }; //Initialize the data for the radial chart
+
+        var connection = new HubConnectionBuilder()
+            .WithUrl("https://localhost:7022/realtimedata")
+            .Build();
+
+        await connection.StartAsync();
+
+        var channelCurrencyStreamItem = await connection
+            .StreamAsChannelAsync<CurrencyStreamItem>("CurrencyValues");
+
+        var channelVariation = await connection
+            .StreamAsChannelAsync<DataItem>("Variation");
+
+        _ = ReadCurrencyStreamAsync(channelCurrencyStreamItem);
+        _ = ReadVariationStreamAsync(channelVariation);
+    }
+
+    private async Task ReadCurrencyStreamAsync(ChannelReader<CurrencyStreamItem> channelCurrencyStreamItem)
+    {
+        // Wait asynchronously for data to become available
+        while (await channelCurrencyStreamItem.WaitToReadAsync())
+        {
+            // Read all currently available data synchronously, before waiting for more data
+            while (channelCurrencyStreamItem.TryRead(out var currencyStreamItem))
+            {
+                _yenSeries.Add(new(currencyStreamItem.Minute, currencyStreamItem.YenValue));
+                _euroSeries.Add(new(currencyStreamItem.Minute, currencyStreamItem.EuroValue));
+
+                await _lineChart.UpdateSeriesAsync();
+            }
+        }
+    }
+
+    private async Task ReadVariationStreamAsync(ChannelReader<DataItem> channelVariation)
+    {
+        // Wait asynchronously for data to become available
+        while (await channelVariation.WaitToReadAsync())
+        {
+            // Read all currently available data synchronously, before waiting for more data
+            while (channelVariation.TryRead(out var variation))
+            {
+                _radialData[0] = variation;
+
+                await _radialChart.UpdateSeriesAsync();
+            }
+        }
+    }
+
+}

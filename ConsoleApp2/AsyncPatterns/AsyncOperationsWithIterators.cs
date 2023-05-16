@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
-
-namespace DotNetExamplesAndNotes.ConsoleApp.AsyncPatterns;
+﻿namespace DotNetExamplesAndNotes.ConsoleApp.AsyncPatterns;
 
 public class AsyncOperationsWithIterators
 {
@@ -61,7 +54,7 @@ public class AsyncOperationsWithIterators
                 Task<int> read = source.ReadAsync(buffer, 0, buffer.Length);
                 yield return read;
                 var numRead = read.Result;
-                if(numRead <= 0)
+                if (numRead <= 0)
                 {
                     break;
                 }
@@ -86,7 +79,7 @@ public class AsyncOperationsWithIterators
                     return;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 tcs.SetException(ex);
                 return;
@@ -101,7 +94,7 @@ public class AsyncOperationsWithIterators
     static (FileStream Source, FileStream Destination) GetFileInAndOutStreams()
     {
         const string baseDirectory = @"C:/users/mt/desktop/asynctests/";
-        
+
         if (!Directory.Exists(baseDirectory))
         {
             Directory.CreateDirectory(baseDirectory);

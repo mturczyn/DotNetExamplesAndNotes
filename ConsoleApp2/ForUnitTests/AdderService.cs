@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DotNetExamplesAndNotes.ConsoleApp.ForUnitTests;
+﻿namespace DotNetExamplesAndNotes.ConsoleApp.ForUnitTests;
 
 public static class AdderService
 {

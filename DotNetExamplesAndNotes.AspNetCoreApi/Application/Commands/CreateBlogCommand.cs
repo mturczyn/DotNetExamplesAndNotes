@@ -21,7 +21,7 @@ public class CreateBlogCommandHandler : IRequestHandler<CreateBlogCommand>
             {
                 Title = "Sample title",
                 Description = "Description",
-            }, 
+            },
             cancellationToken);
     }
 }

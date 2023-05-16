@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DotNetExamplesAndNotes.WebApiDAL.Repositories;
+﻿namespace DotNetExamplesAndNotes.WebApiDAL.Repositories;
 
 public interface IBlogsRepository : IBaseRepository<Blog>
 {
