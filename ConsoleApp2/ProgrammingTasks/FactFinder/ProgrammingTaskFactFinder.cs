@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks;
+namespace DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks.FactFinder;
 /*
  * Implement the following method to calculate the number of days between two dates A and B 
  * within one and the same year.
