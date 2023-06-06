@@ -1,4 +1,4 @@
-﻿using DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks;
+﻿using DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks.RiteNRG;
 using Newtonsoft.Json;
 
 class Program
@@ -11,7 +11,15 @@ class Program
         //Calculator.Start();
         //ProgrammingTaskFactFinder.Test();
 
-        SourceLink();
+        //SourceLink();
+
+        ProgrammingTaskRiteNRG.TestMethod();
+    }
+
+    private static void InKeyword(in int number)
+    {
+        // Below line produces error
+        //number = 12;
     }
 
     private static void SourceLink()
