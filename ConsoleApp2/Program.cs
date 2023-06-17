@@ -1,4 +1,5 @@
-﻿using DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks.RiteNRG;
+﻿using DotNetExamplesAndNotes.ConsoleApp.EitherType;
+using DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks.RiteNRG;
 using Newtonsoft.Json;
 
 class Program
@@ -13,7 +14,20 @@ class Program
 
         //SourceLink();
 
-        ProgrammingTaskRiteNRG.TestMethod();
+        //ProgrammingTaskRiteNRG.TestMethod();
+
+        //EitherDemo.Demonstrate();
+
+        foreach (var item in GetInts())
+        {
+            Console.WriteLine(item);
+        }
+    }
+
+    private static IEnumerable<int> GetInts()
+    {
+        yield return 1;
+        yield return 2;
     }
 
     private static void InKeyword(in int number)
