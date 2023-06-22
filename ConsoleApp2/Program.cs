@@ -1,5 +1,6 @@
-﻿using DotNetExamplesAndNotes.ConsoleApp.EitherType;
-using DotNetExamplesAndNotes.ConsoleApp.ProgrammingTasks.RiteNRG;
+﻿using DotNetExamplesAndNotes.SampleDal;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Newtonsoft.Json;
 
 class Program
@@ -18,10 +19,10 @@ class Program
 
         //EitherDemo.Demonstrate();
 
-        foreach (var item in GetInts())
-        {
-            Console.WriteLine(item);
-        }
+        //foreach (var item in GetInts())
+        //{
+        //    Console.WriteLine(item);
+        //}
     }
 
     private static IEnumerable<int> GetInts()
