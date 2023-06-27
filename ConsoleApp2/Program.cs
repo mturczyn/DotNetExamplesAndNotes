@@ -1,12 +1,12 @@
-﻿using DotNetExamplesAndNotes.SampleDal;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
+﻿using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 
 class Program
 {
     static async Task Main(string[] args)
     {
+        //RuntimeHelpers.IsReferenceOrContainsReferences<string>();
+
         //await AsyncOperationsWithIterators.AsyncWithIteratorsExample();
         //TestArea.VisitorPaternTestArea();
 
