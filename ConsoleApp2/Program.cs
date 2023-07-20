@@ -1,10 +1,14 @@
 ﻿using System.Runtime.CompilerServices;
+using DotNetExamplesAndNotes.ConsoleApp.UnmanagedCodeExamples;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 
 class Program
 {
     static async Task Main(string[] args)
     {
+        await InterceptKeys.Run();
         //RuntimeHelpers.IsReferenceOrContainsReferences<string>();
 
         //await AsyncOperationsWithIterators.AsyncWithIteratorsExample();
@@ -23,6 +27,7 @@ class Program
         //{
         //    Console.WriteLine(item);
         //}
+
     }
 
     private static IEnumerable<int> GetInts()

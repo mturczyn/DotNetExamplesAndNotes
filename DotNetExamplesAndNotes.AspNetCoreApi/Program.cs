@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using DotNetExamplesAndNotes.AspNetCoreApi.Application.Commands;
 using DotNetExamplesAndNotes.AspNetCoreApi.Application.Queries;
 using DotNetExamplesAndNotes.WebApiDAL;
@@ -17,6 +16,13 @@ builder.Services.AddMediatR(x => x.RegisterServicesFromAssembly(Assembly.GetExec
 builder.Services.AddDal();
 
 var app = builder.Build();
+
+// Custom middleware.
+app.Use(async (HttpContext context, Func<Task> task) =>
+{
+    context.Response.Headers.TryAdd("custom-header-middleware", "a-value");
+    await task.Invoke();
+});
 
 using (var scope = app.Services.CreateScope())
 {
